@@ -34,25 +34,6 @@
     }
   },
   {
-    "type": "capacitor_instance",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "node",
-          "named": true
-        },
-        {
-          "type": "value",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
     "type": "control_line",
     "named": true,
     "fields": {},
@@ -91,38 +72,60 @@
     }
   },
   {
-    "type": "inductor_instance",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "node",
-          "named": true
-        },
-        {
-          "type": "value",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
     "type": "instance_line",
     "named": true,
-    "fields": {},
+    "fields": {
+      "device_name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "part_number",
+            "named": true
+          }
+        ]
+      },
+      "device_type": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "c",
+            "named": true
+          },
+          {
+            "type": "l",
+            "named": true
+          },
+          {
+            "type": "q",
+            "named": true
+          },
+          {
+            "type": "r",
+            "named": true
+          },
+          {
+            "type": "v",
+            "named": true
+          }
+        ]
+      }
+    },
     "children": {
       "multiple": true,
       "required": true,
       "types": [
         {
-          "type": "capacitor_instance",
+          "type": "ac",
           "named": true
         },
         {
-          "type": "inductor_instance",
+          "type": "dc",
+          "named": true
+        },
+        {
+          "type": "identifier",
           "named": true
         },
         {
@@ -130,30 +133,11 @@
           "named": true
         },
         {
-          "type": "resistor_instance",
-          "named": true
-        },
-        {
-          "type": "transistor_instance",
-          "named": true
-        },
-        {
-          "type": "voltage_source_instance",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "resistor_instance",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
           "type": "node",
+          "named": true
+        },
+        {
+          "type": "time_dependent_value",
           "named": true
         },
         {
@@ -222,52 +206,6 @@
     }
   },
   {
-    "type": "transistor_instance",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "identifier",
-          "named": true
-        },
-        {
-          "type": "node",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "voltage_source_instance",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "ac",
-          "named": true
-        },
-        {
-          "type": "dc",
-          "named": true
-        },
-        {
-          "type": "node",
-          "named": true
-        },
-        {
-          "type": "time_dependent_value",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
     "type": "(",
     "named": false
   },
@@ -292,7 +230,15 @@
     "named": false
   },
   {
+    "type": "c",
+    "named": true
+  },
+  {
     "type": "identifier",
+    "named": true
+  },
+  {
+    "type": "l",
     "named": true
   },
   {
@@ -305,6 +251,22 @@
   },
   {
     "type": "node",
+    "named": true
+  },
+  {
+    "type": "part_number",
+    "named": true
+  },
+  {
+    "type": "q",
+    "named": true
+  },
+  {
+    "type": "r",
+    "named": true
+  },
+  {
+    "type": "v",
     "named": true
   },
   {

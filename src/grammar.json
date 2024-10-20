@@ -48,23 +48,23 @@
           "members": [
             {
               "type": "SYMBOL",
-              "name": "resistor_instance"
+              "name": "_resistor_instance"
             },
             {
               "type": "SYMBOL",
-              "name": "capacitor_instance"
+              "name": "_capacitor_instance"
             },
             {
               "type": "SYMBOL",
-              "name": "inductor_instance"
+              "name": "_inductor_instance"
             },
             {
               "type": "SYMBOL",
-              "name": "transistor_instance"
+              "name": "_transistor_instance"
             },
             {
               "type": "SYMBOL",
-              "name": "voltage_source_instance"
+              "name": "_voltage_source_instance"
             }
           ]
         },
@@ -74,24 +74,24 @@
         }
       ]
     },
-    "resistor_instance": {
+    "_resistor_instance": {
       "type": "SEQ",
       "members": [
         {
-          "type": "SEQ",
-          "members": [
-            {
-              "type": "PATTERN",
-              "value": "r|R"
-            },
-            {
-              "type": "IMMEDIATE_TOKEN",
-              "content": {
-                "type": "PATTERN",
-                "value": "[0-9a-zA-Z]*"
-              }
-            }
-          ]
+          "type": "FIELD",
+          "name": "device_type",
+          "content": {
+            "type": "SYMBOL",
+            "name": "r"
+          }
+        },
+        {
+          "type": "FIELD",
+          "name": "device_name",
+          "content": {
+            "type": "SYMBOL",
+            "name": "part_number"
+          }
         },
         {
           "type": "SYMBOL",
@@ -107,24 +107,24 @@
         }
       ]
     },
-    "capacitor_instance": {
+    "_capacitor_instance": {
       "type": "SEQ",
       "members": [
         {
-          "type": "SEQ",
-          "members": [
-            {
-              "type": "PATTERN",
-              "value": "c|C"
-            },
-            {
-              "type": "IMMEDIATE_TOKEN",
-              "content": {
-                "type": "PATTERN",
-                "value": "[0-9a-zA-Z]*"
-              }
-            }
-          ]
+          "type": "FIELD",
+          "name": "device_type",
+          "content": {
+            "type": "SYMBOL",
+            "name": "c"
+          }
+        },
+        {
+          "type": "FIELD",
+          "name": "device_name",
+          "content": {
+            "type": "SYMBOL",
+            "name": "part_number"
+          }
         },
         {
           "type": "SYMBOL",
@@ -140,24 +140,24 @@
         }
       ]
     },
-    "inductor_instance": {
+    "_inductor_instance": {
       "type": "SEQ",
       "members": [
         {
-          "type": "SEQ",
-          "members": [
-            {
-              "type": "PATTERN",
-              "value": "l|L"
-            },
-            {
-              "type": "IMMEDIATE_TOKEN",
-              "content": {
-                "type": "PATTERN",
-                "value": "[0-9a-zA-Z]*"
-              }
-            }
-          ]
+          "type": "FIELD",
+          "name": "device_type",
+          "content": {
+            "type": "SYMBOL",
+            "name": "l"
+          }
+        },
+        {
+          "type": "FIELD",
+          "name": "device_name",
+          "content": {
+            "type": "SYMBOL",
+            "name": "part_number"
+          }
         },
         {
           "type": "SYMBOL",
@@ -173,24 +173,24 @@
         }
       ]
     },
-    "transistor_instance": {
+    "_transistor_instance": {
       "type": "SEQ",
       "members": [
         {
-          "type": "SEQ",
-          "members": [
-            {
-              "type": "PATTERN",
-              "value": "q|Q"
-            },
-            {
-              "type": "IMMEDIATE_TOKEN",
-              "content": {
-                "type": "PATTERN",
-                "value": "[0-9a-zA-Z]*"
-              }
-            }
-          ]
+          "type": "FIELD",
+          "name": "device_type",
+          "content": {
+            "type": "SYMBOL",
+            "name": "q"
+          }
+        },
+        {
+          "type": "FIELD",
+          "name": "device_name",
+          "content": {
+            "type": "SYMBOL",
+            "name": "part_number"
+          }
         },
         {
           "type": "SYMBOL",
@@ -210,24 +210,24 @@
         }
       ]
     },
-    "voltage_source_instance": {
+    "_voltage_source_instance": {
       "type": "SEQ",
       "members": [
         {
-          "type": "SEQ",
-          "members": [
-            {
-              "type": "PATTERN",
-              "value": "v|V"
-            },
-            {
-              "type": "IMMEDIATE_TOKEN",
-              "content": {
-                "type": "PATTERN",
-                "value": "[0-9a-zA-Z]*"
-              }
-            }
-          ]
+          "type": "FIELD",
+          "name": "device_type",
+          "content": {
+            "type": "SYMBOL",
+            "name": "v"
+          }
+        },
+        {
+          "type": "FIELD",
+          "name": "device_name",
+          "content": {
+            "type": "SYMBOL",
+            "name": "part_number"
+          }
         },
         {
           "type": "SYMBOL",
@@ -418,6 +418,13 @@
         }
       ]
     },
+    "part_number": {
+      "type": "IMMEDIATE_TOKEN",
+      "content": {
+        "type": "PATTERN",
+        "value": "[0-9a-zA-Z]*"
+      }
+    },
     "identifier": {
       "type": "PATTERN",
       "value": "[a-zA-Z][a-zA-Z0-9]*"
@@ -437,6 +444,26 @@
     "newline": {
       "type": "PATTERN",
       "value": "\\r?\\n"
+    },
+    "r": {
+      "type": "PATTERN",
+      "value": "r|R"
+    },
+    "c": {
+      "type": "PATTERN",
+      "value": "c|C"
+    },
+    "l": {
+      "type": "PATTERN",
+      "value": "l|L"
+    },
+    "q": {
+      "type": "PATTERN",
+      "value": "q|Q"
+    },
+    "v": {
+      "type": "PATTERN",
+      "value": "v|V"
     }
   },
   "extras": [

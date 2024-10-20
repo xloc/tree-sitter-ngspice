@@ -34,26 +34,26 @@ module.exports = grammar({
     // Instance lines
     instance_line: $ => seq(
       choice(
-        $.resistor_instance,
-        $.capacitor_instance,
-        $.inductor_instance,
-        $.transistor_instance,
-        $.voltage_source_instance,
+        $._resistor_instance,
+        $._capacitor_instance,
+        $._inductor_instance,
+        $._transistor_instance,
+        $._voltage_source_instance,
       ),
       $.newline
     ),
 
-    resistor_instance: $ =>
-      seq(device_name(/r|R/), $.node, $.node, $.value),
-    capacitor_instance: $ =>
-      seq(device_name(/c|C/), $.node, $.node, $.value),
-    inductor_instance: $ =>
-      seq(device_name(/l|L/), $.node, $.node, $.value),
-    transistor_instance: $ =>
-      seq(device_name(/q|Q/), $.node, $.node, $.node, $.identifier),
+    _resistor_instance: $ =>
+      seq(field('device_type', $.r), field('device_name', $.part_number), $.node, $.node, $.value),
+    _capacitor_instance: $ =>
+      seq(field('device_type', $.c), field('device_name', $.part_number), $.node, $.node, $.value),
+    _inductor_instance: $ =>
+      seq(field('device_type', $.l), field('device_name', $.part_number), $.node, $.node, $.value),
+    _transistor_instance: $ =>
+      seq(field('device_type', $.q), field('device_name', $.part_number), $.node, $.node, $.node, $.identifier),
 
-    voltage_source_instance: $ => seq(
-      device_name(/v|V/), $.node, $.node,
+    _voltage_source_instance: $ => seq(
+      field('device_type', $.v), field('device_name', $.part_number), $.node, $.node,
       optional($.dc), optional($.ac), optional($.time_dependent_value)),
     dc: $ => seq(optional(/dc|DC/), $.value),
     ac: $ => seq(/ac|AC/, $.value),
@@ -78,12 +78,20 @@ module.exports = grammar({
     ),
 
     // Tokens
+    part_number: $ => token.immediate(/[0-9a-zA-Z]*/),
     identifier: $ => /[a-zA-Z][a-zA-Z0-9]*/,
     node: $ => /[a-zA-Z0-9]+/,
     value: $ => /[0-9.]+(e|E-?\d+)?[a-zA-Z]*/,
 
     line_content: $ => /.*/,
     newline: $ => /\r?\n/,
+
+    r: $ => /r|R/,
+    c: $ => /c|C/,
+    l: $ => /l|L/,
+    q: $ => /q|Q/,
+    v: $ => /v|V/,
+
   }
 });
 
