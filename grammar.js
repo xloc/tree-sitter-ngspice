@@ -12,36 +12,33 @@ module.exports = grammar({
   name: 'ngspice',
 
   extras: $ => [
-    /\s+/,
-    token(seq('\n+', /\s*/)),
-    /;.*/,
+    /\s+/, // whitespace
+    token(seq('\n+', /\s*/)), // line continuation
+    $.dolar_comment,
+    $.semicolon_comment,
+    $.line_comment,
   ],
 
   rules: {
+    // file must end with a newline
     source_file: $ => seq(
-      $.title_line,
-      repeat(choice(
-        $.instance_line,
-        $.control_line
-      ))
+      seq($.title_line, '\n'),
+      repeat(choice($.body_line, '\n'))
     ),
 
-    title_line: $ => seq(
-      $.line_content,
-      $.newline
-    ),
+    title_line: $ => /[^\n]+/,
 
     // Instance lines
-    instance_line: $ => seq(
+    body_line: $ =>
       choice(
+        $.control_line,
         $._resistor_instance,
         $._capacitor_instance,
         $._inductor_instance,
         $._transistor_instance,
         $._voltage_source_instance,
+        $._mosfet_instance,
       ),
-      $.newline
-    ),
 
     _resistor_instance: $ =>
       seq(field('device_type', $.r), field('device_name', $.part_number), $.node, $.node, $.value),
@@ -51,6 +48,8 @@ module.exports = grammar({
       seq(field('device_type', $.l), field('device_name', $.part_number), $.node, $.node, $.value),
     _transistor_instance: $ =>
       seq(field('device_type', $.q), field('device_name', $.part_number), $.node, $.node, $.node, $.identifier),
+    _mosfet_instance: $ =>
+      seq(field('device_type', $.m), field('device_name', $.part_number), $.node, $.node, $.node, $.node, $.identifier, repeat($.assignment)),
 
     _voltage_source_instance: $ => seq(
       field('device_type', $.v), field('device_name', $.part_number), $.node, $.node,
@@ -63,23 +62,20 @@ module.exports = grammar({
 
     // Control lines
     control_line: $ => seq(
-      choice('.model', '.tran', '.end'),
+      choice('.model', '.tran', '.end', '.include'),
       repeat(choice(
         $.value,
-        $.identifier,
+        $.dotted_identifier,
         seq('(', repeat($.assignment), ')')
       )),
     ),
 
-    assignment: $ => seq(
-      $.identifier,
-      '=',
-      $.value
-    ),
+    assignment: $ => seq($.identifier, '=', $.value),
 
     // Tokens
     part_number: $ => token.immediate(/[0-9a-zA-Z]*/),
     identifier: $ => /[a-zA-Z][a-zA-Z0-9]*/,
+    dotted_identifier: $ => /[a-zA-Z][a-zA-Z0-9.]*/,
     node: $ => /[a-zA-Z0-9]+/,
     value: $ => /[0-9.]+(e|E-?\d+)?[a-zA-Z]*/,
 
@@ -91,7 +87,10 @@ module.exports = grammar({
     l: $ => /l|L/,
     q: $ => /q|Q/,
     v: $ => /v|V/,
-
+    m: $ => /m|M/,
+    dolar_comment: $ => seq('$', /[^\n]*/),
+    semicolon_comment: $ => seq(';', /[^\n]*/),
+    line_comment: $ => seq('*', /[^\n]*/),
   }
 });
 

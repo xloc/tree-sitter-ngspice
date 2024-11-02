@@ -6,8 +6,17 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "SYMBOL",
-          "name": "title_line"
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "title_line"
+            },
+            {
+              "type": "STRING",
+              "value": "\n"
+            }
+          ]
         },
         {
           "type": "REPEAT",
@@ -16,11 +25,11 @@
             "members": [
               {
                 "type": "SYMBOL",
-                "name": "instance_line"
+                "name": "body_line"
               },
               {
-                "type": "SYMBOL",
-                "name": "control_line"
+                "type": "STRING",
+                "value": "\n"
               }
             ]
           }
@@ -28,49 +37,39 @@
       ]
     },
     "title_line": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "SYMBOL",
-          "name": "line_content"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "newline"
-        }
-      ]
+      "type": "PATTERN",
+      "value": "[^\\n]+"
     },
-    "instance_line": {
-      "type": "SEQ",
+    "body_line": {
+      "type": "CHOICE",
       "members": [
         {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "SYMBOL",
-              "name": "_resistor_instance"
-            },
-            {
-              "type": "SYMBOL",
-              "name": "_capacitor_instance"
-            },
-            {
-              "type": "SYMBOL",
-              "name": "_inductor_instance"
-            },
-            {
-              "type": "SYMBOL",
-              "name": "_transistor_instance"
-            },
-            {
-              "type": "SYMBOL",
-              "name": "_voltage_source_instance"
-            }
-          ]
+          "type": "SYMBOL",
+          "name": "control_line"
         },
         {
           "type": "SYMBOL",
-          "name": "newline"
+          "name": "_resistor_instance"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_capacitor_instance"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_inductor_instance"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_transistor_instance"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_voltage_source_instance"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_mosfet_instance"
         }
       ]
     },
@@ -207,6 +206,54 @@
         {
           "type": "SYMBOL",
           "name": "identifier"
+        }
+      ]
+    },
+    "_mosfet_instance": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "FIELD",
+          "name": "device_type",
+          "content": {
+            "type": "SYMBOL",
+            "name": "m"
+          }
+        },
+        {
+          "type": "FIELD",
+          "name": "device_name",
+          "content": {
+            "type": "SYMBOL",
+            "name": "part_number"
+          }
+        },
+        {
+          "type": "SYMBOL",
+          "name": "node"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "node"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "node"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "node"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "identifier"
+        },
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "SYMBOL",
+            "name": "assignment"
+          }
         }
       ]
     },
@@ -360,6 +407,10 @@
             {
               "type": "STRING",
               "value": ".end"
+            },
+            {
+              "type": "STRING",
+              "value": ".include"
             }
           ]
         },
@@ -374,7 +425,7 @@
               },
               {
                 "type": "SYMBOL",
-                "name": "identifier"
+                "name": "dotted_identifier"
               },
               {
                 "type": "SEQ",
@@ -429,6 +480,10 @@
       "type": "PATTERN",
       "value": "[a-zA-Z][a-zA-Z0-9]*"
     },
+    "dotted_identifier": {
+      "type": "PATTERN",
+      "value": "[a-zA-Z][a-zA-Z0-9.]*"
+    },
     "node": {
       "type": "PATTERN",
       "value": "[a-zA-Z0-9]+"
@@ -464,6 +519,30 @@
     "v": {
       "type": "PATTERN",
       "value": "v|V"
+    },
+    "m": {
+      "type": "PATTERN",
+      "value": "m|M"
+    },
+    "comment": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PATTERN",
+        "value": "[;\\$].*"
+      }
+    },
+    "line_comment": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "*"
+        },
+        {
+          "type": "PATTERN",
+          "value": "[^\\n]*"
+        }
+      ]
     }
   },
   "extras": [
@@ -488,8 +567,12 @@
       }
     },
     {
-      "type": "PATTERN",
-      "value": ";.*"
+      "type": "SYMBOL",
+      "name": "comment"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "line_comment"
     }
   ],
   "conflicts": [],
